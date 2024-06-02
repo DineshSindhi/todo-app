@@ -170,6 +170,7 @@ class _TodoPageState extends State<TodoPage> {
               Text(isUpdate ? 'Update Todo' : 'Todo',
                 style: TextStyle(fontSize: 30,color: Colors.white),),
               TextField(controller: titController,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelStyle: TextStyle(color: Colors.white),
                     label: Text('Enter Title'),
@@ -179,6 +180,7 @@ class _TodoPageState extends State<TodoPage> {
                 ),),
               SizedBox(height: 10,),
               TextField(controller: taskDescController,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     label: Text('Enter TaskDesc'),
                     labelStyle: TextStyle(color: Colors.white),

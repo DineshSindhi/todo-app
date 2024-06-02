@@ -1,13 +1,10 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/data/model/user_model.dart';
-
 import '../../../domain/ui_helper.dart';
 
 class SignPage extends StatelessWidget {
-
   var emailController=TextEditingController();
   var passController=TextEditingController();
   var nameController=TextEditingController();
@@ -35,7 +32,8 @@ class SignPage extends StatelessWidget {
             mySizeBox(),
             myTextFiled(controllerName: emailController, label: 'Email',hint: 'Enter your Email',),
             mySizeBox(),
-            myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
+            myPassController(controllerName: passController, label: 'Password',hint: 'Enter your Password'),
+            //myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
             mySizeBox(),
             Container(
               width: double.infinity,
@@ -45,27 +43,28 @@ class SignPage extends StatelessWidget {
                   var cred =await fireBaseAuth.createUserWithEmailAndPassword(email: emailController.text.toString(), password: passController.text.toString());
                  var data= UserModel(email: emailController.text.toString(),
                       pass: passController.text.toString(),
+                      uid: cred.user!.uid,
                       mob: mobController.text.toString(),
                       gender: genderController.text.toString(),
                       name: nameController.text.toString());
                  mUsers.doc(cred.user!.uid).set(data.toDoc());
+                 print('Sign ${cred.user!.uid}');
 
                   Navigator.pop(context);
                 }on FirebaseAuthException catch(e){
                   if (e.code == 'weak-password') {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.code)));
                     print('The password provided is too weak.');
                   } else if (e.code == 'email-already-in-use') {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.code)));
                     print('The account already exists for that email.');
                   }
                 }catch(e){
-                  ScaffoldMessenger(child: SnackBar(content: Text('Error :${e}'),),);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
                 }
 
               }, child: Text('Sign Up',style: TextStyle(fontSize: 25,color: Colors.white),),style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueGrey,
-
-
-              ),),
+                backgroundColor: Colors.blueGrey,),),
             ),
             mySizeBox(),
             Row(

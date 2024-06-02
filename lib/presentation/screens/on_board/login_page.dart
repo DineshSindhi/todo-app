@@ -25,7 +25,8 @@ class LoginPage extends StatelessWidget {
             mySizeBox(),
             myTextFiled(controllerName: emailController, label: 'Email',hint: 'Enter your Email'),
             mySizeBox(),
-            myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
+            myPassController(controllerName: passController, label: 'Password',hint: 'Enter your Password'),
+            //myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
             mySizeBox(),
             Container(
               width: double.infinity,
@@ -33,20 +34,23 @@ class LoginPage extends StatelessWidget {
               child: ElevatedButton(onPressed: () async {
                 try{
                   var value=await fireBaseAuth.signInWithEmailAndPassword(email: emailController.text.toString(), password: passController.text.toString());
-                 print('${value.user!.uid}');
+                 print('email ${value.user!.uid}');
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(),));
                   var pref=await SharedPreferences.getInstance();
                   pref.setString('uId', value.user!.uid);
                 }on FirebaseAuthException catch(e){
                   if (e.code == 'user-not-found') {
-                    ScaffoldMessenger(child: SnackBar(content: Text('${e.code}'),),);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.code)));
+
                     print('No user found for that email.');
                   } else if (e.code == 'wrong-password') {
-                    ScaffoldMessenger(child: SnackBar(content: Text('${e.code}'),),);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.code)));
+
                     print('Wrong password provided for that user.');
                   }
                 }catch(e){
-                  ScaffoldMessenger(child: SnackBar(content: Text('Error :${e}'),),);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+
                 }
 
               }, child: Text('Login',style: TextStyle(fontSize: 25,color: Colors.white),),style: ElevatedButton.styleFrom(
