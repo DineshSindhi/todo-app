@@ -36,29 +36,33 @@ class ProfilePage extends StatelessWidget {
                       height: 80,
                       width: 80,
                       child: CircleAvatar(
-                       // backgroundColor: Colors.black,
+                       child: Image.asset('assets/images/avatar.png',fit: BoxFit.fill,),
                       ),
                     ),
                     myEmail('Email - ${eachData.email} '),
                     myContainer('Name - ${eachData.name}', (){
                       showModalBottomSheet(context: context, builder: (c) {
-                        return mySheet('Name', 'Name','Update Name',context,'name');
+                        controller.text=eachData.name!;
+                        return mySheet('Name', 'Name','Update Name',context,'name',);
                       },);
                     }, Icon(Icons.edit)),
                     myContainer('Mobile No. - ${eachData.mob}', (){
                       showModalBottomSheet(context: context, builder: (c) {
-                        return mySheet('Mobile No.', 'Mobile No.', 'Update Mobile No.',context,'mob');
+                        controller.text=eachData.mob!;
+                        return mySheet('Mobile No.', 'Mobile No.', 'Update Mobile No.',context,'mob',);
                       },);
                     }, Icon(Icons.edit)),
                     myContainer('Gender - ${eachData.gender}', (){
                       showModalBottomSheet(context: context, builder: (c) {
-                        return mySheet('Gender', 'Gender', 'Update Gender',context,'gender');
+                        controller.text=eachData.gender!;
+                        return mySheet('Gender', 'Gender', 'Update Gender',context,'gender',);
                       },);
                     }, Icon(Icons.edit)),
 
                     myContainer('Password - ${eachData.pass}', (){
                       showModalBottomSheet(context: context, builder: (c) {
-                        return mySheet('Password', 'Password', ' Update Password',context,'pass');
+                        controller.text=eachData.pass!;
+                        return mySheet('Password', 'Password', ' Update Password',context,'pass',);
                       },);
                     }, Icon(Icons.edit)),
                     myContainer('Sign Out', (){
@@ -102,7 +106,7 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
-  Widget mySheet(String titleText, String lable,String buttonText, BuildContext context,String valueText ) {
+  Widget mySheet(String titleText, String lable,String buttonText, BuildContext context,String valueText,) {
     return Container(
         height: 250,
         decoration: BoxDecoration(
@@ -127,10 +131,12 @@ class ProfilePage extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(onPressed: (){
-                    fireStore.collection('users').add({
+
+                    fireStore.collection('users').doc(fireBaseAuth.currentUser!.uid).update({
                       '$valueText':controller.text.toString(),
                     });
                     Navigator.pop(context);
+                    controller.clear();
                   }, child: Text(buttonText,style: TextStyle(color: Colors.white,fontSize: 20),),style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueGrey,)),
                   ElevatedButton(onPressed: (){
@@ -160,46 +166,3 @@ myEmail(String text){
     ),
   );
 }
-
-
-
-
-
-// Column(mainAxisAlignment: MainAxisAlignment.center,
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           CircleAvatar(
-//             backgroundColor: Colors.black,
-//           ),
-//           myEmail('Email - '),
-//           myContainer('Name - ', (){
-//             showModalBottomSheet(context: context, builder: (c) {
-//               return mySheet('Name', 'Name','Update Name',context);
-//             },);
-//           }, Icon(Icons.edit)),
-//           myContainer('Mobile No. - ', (){
-//             showModalBottomSheet(context: context, builder: (c) {
-//               return mySheet('Mobile No.', 'Mobile No.', 'Update Mobile No.',context);
-//             },);
-//           }, Icon(Icons.edit)),
-//           myContainer('Gender - ', (){
-//             showModalBottomSheet(context: context, builder: (c) {
-//               return mySheet('Gender', 'Gender', 'Update Gender',context);
-//             },);
-//           }, Icon(Icons.edit)),
-//
-//           myContainer('Password - ', (){
-//             showModalBottomSheet(context: context, builder: (c) {
-//               return mySheet('Password', 'Password', ' Update Password',context);
-//             },);
-//           }, Icon(Icons.edit)),
-//           myContainer('Sign Out', (){
-//             final firBaseAuth=FirebaseAuth.instance;
-//             firBaseAuth.signOut().then((value){
-//               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
-//             },onError: (e){
-//               print(e);
-//             });
-//           }, Icon(Icons.logout)),
-//         ],
-//       )
