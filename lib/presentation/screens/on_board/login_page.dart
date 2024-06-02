@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_app/presentation/screens/home/home_page.dart';
 import 'package:todo_app/presentation/screens/on_board/sign_up_page.dart';
 
 import '../../../domain/ui_helper.dart';
@@ -26,26 +27,32 @@ class LoginPage extends StatelessWidget {
             mySizeBox(),
             myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
             mySizeBox(),
-            ElevatedButton(onPressed: () async {
-              try{
-                var value=await fireBaseAuth.signInWithEmailAndPassword(email: emailController.text.toString(), password: passController.text.toString());
-               print('${value.user!.uid}');
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TodoPage(),));
-                var pref=await SharedPreferences.getInstance();
-                pref.setString('uId', value.user!.uid);
-              }on FirebaseAuthException catch(e){
-                if (e.code == 'user-not-found') {
-                  ScaffoldMessenger(child: SnackBar(content: Text('${e.code}'),),);
-                  print('No user found for that email.');
-                } else if (e.code == 'wrong-password') {
-                  ScaffoldMessenger(child: SnackBar(content: Text('${e.code}'),),);
-                  print('Wrong password provided for that user.');
+            Container(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(onPressed: () async {
+                try{
+                  var value=await fireBaseAuth.signInWithEmailAndPassword(email: emailController.text.toString(), password: passController.text.toString());
+                 print('${value.user!.uid}');
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(),));
+                  var pref=await SharedPreferences.getInstance();
+                  pref.setString('uId', value.user!.uid);
+                }on FirebaseAuthException catch(e){
+                  if (e.code == 'user-not-found') {
+                    ScaffoldMessenger(child: SnackBar(content: Text('${e.code}'),),);
+                    print('No user found for that email.');
+                  } else if (e.code == 'wrong-password') {
+                    ScaffoldMessenger(child: SnackBar(content: Text('${e.code}'),),);
+                    print('Wrong password provided for that user.');
+                  }
+                }catch(e){
+                  ScaffoldMessenger(child: SnackBar(content: Text('Error :${e}'),),);
                 }
-              }catch(e){
-                ScaffoldMessenger(child: SnackBar(content: Text('Error :${e}'),),);
-              }
 
-            }, child: Text('Login',style: TextStyle(fontSize: 25),),),
+              }, child: Text('Login',style: TextStyle(fontSize: 25,color: Colors.white),),style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueGrey,
+              )),
+            ),
             mySizeBox(),
              Row(
                   mainAxisAlignment: MainAxisAlignment.center,

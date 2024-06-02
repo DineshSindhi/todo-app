@@ -1,8 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/presentation/screens/home/todo_page.dart';
-import 'package:todo_app/presentation/screens/home/profile_page.dart';
-import 'package:todo_app/presentation/screens/on_board/login_page.dart';
 import 'package:todo_app/presentation/screens/splash_screen/splash_page.dart';
 
 import 'firebase_options.dart';

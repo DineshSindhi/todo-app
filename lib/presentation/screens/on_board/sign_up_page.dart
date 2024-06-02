@@ -37,28 +37,36 @@ class SignPage extends StatelessWidget {
             mySizeBox(),
             myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
             mySizeBox(),
-            ElevatedButton(onPressed: () async {
-              try{
-                var cred =await fireBaseAuth.createUserWithEmailAndPassword(email: emailController.text.toString(), password: passController.text.toString());
-               var data= UserModel(email: emailController.text.toString(),
-                    pass: passController.text.toString(),
-                    mob: mobController.text.toString(),
-                    gender: genderController.text.toString(),
-                    name: nameController.text.toString());
-               mUsers.doc(cred.user!.uid).set(data.toDoc());
-             //  mUsers.add();
-                Navigator.pop(context);
-              }on FirebaseAuthException catch(e){
-                if (e.code == 'weak-password') {
-                  print('The password provided is too weak.');
-                } else if (e.code == 'email-already-in-use') {
-                  print('The account already exists for that email.');
-                }
-              }catch(e){
-                ScaffoldMessenger(child: SnackBar(content: Text('Error :${e}'),),);
-              }
+            Container(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(onPressed: () async {
+                try{
+                  var cred =await fireBaseAuth.createUserWithEmailAndPassword(email: emailController.text.toString(), password: passController.text.toString());
+                 var data= UserModel(email: emailController.text.toString(),
+                      pass: passController.text.toString(),
+                      mob: mobController.text.toString(),
+                      gender: genderController.text.toString(),
+                      name: nameController.text.toString());
+                 mUsers.doc(cred.user!.uid).set(data.toDoc());
 
-            }, child: Text('Sign Up',style: TextStyle(fontSize: 25),)),
+                  Navigator.pop(context);
+                }on FirebaseAuthException catch(e){
+                  if (e.code == 'weak-password') {
+                    print('The password provided is too weak.');
+                  } else if (e.code == 'email-already-in-use') {
+                    print('The account already exists for that email.');
+                  }
+                }catch(e){
+                  ScaffoldMessenger(child: SnackBar(content: Text('Error :${e}'),),);
+                }
+
+              }, child: Text('Sign Up',style: TextStyle(fontSize: 25,color: Colors.white),),style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueGrey,
+
+
+              ),),
+            ),
             mySizeBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +75,7 @@ class SignPage extends StatelessWidget {
                 InkWell(onTap: (){
                   Navigator.pop(context);
                 },
-                    child: Text('Login now',style: TextStyle(fontSize: 21,color: Colors.blue),)),
+                    child: Text(' Login now',style: TextStyle(fontSize: 21,color: Colors.blue),)),
               ],
             ),
           ],
