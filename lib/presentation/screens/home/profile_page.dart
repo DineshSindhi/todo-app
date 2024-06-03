@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/data/model/user_model.dart';
 import 'package:todo_app/domain/ui_helper.dart';
 import 'package:todo_app/presentation/screens/on_board/login_page.dart';
@@ -32,14 +30,13 @@ class ProfilePage extends StatelessWidget {
                 var eachData=UserModel.fromDoc(mData);
                 return Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 80,
-                      width: 80,
-                      child: CircleAvatar(
-                       child: Image.asset('assets/images/avatar.png',fit: BoxFit.fill,),
-                      ),
-                    ),
-                    myEmail('Email - ${eachData.email} '),
+                  SizedBox(
+                    height: 110,
+                    width: 110,
+                    child: ClipRRect(
+                        child: Image.asset('assets/images/avatar.png',fit: BoxFit.fill,)),
+                  ),
+                    myEmail(' ${eachData.email} '),
                     myContainer('Name - ${eachData.name}', (){
                       showModalBottomSheet(context: context, builder: (c) {
                         controller.text=eachData.name!;
@@ -138,7 +135,7 @@ class ProfilePage extends StatelessWidget {
                     Navigator.pop(context);
                     controller.clear();
                   }, child: Text(buttonText,style: TextStyle(color: Colors.white,fontSize: 20),),style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueGrey,)),
+                    backgroundColor: Colors.blueGrey,)),
                   ElevatedButton(onPressed: (){
                     Navigator.pop(context);
                   }, child: Text('Cancel',style: TextStyle(color: Colors.white,fontSize: 22),),style: ElevatedButton.styleFrom(
@@ -146,7 +143,7 @@ class ProfilePage extends StatelessWidget {
                 ],
               )
             ])));
-}}
+  }}
 myEmail(String text){
   return Container(
     width: double.infinity,
@@ -158,7 +155,7 @@ myEmail(String text){
     ),
     child: Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
+      child: Row(mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(text,style: TextStyle(fontSize: 20),),
         ],
