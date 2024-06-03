@@ -39,30 +39,32 @@ class SignPage extends StatelessWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(onPressed: () async {
-                try{
-                  var cred =await fireBaseAuth.createUserWithEmailAndPassword(email: emailController.text.toString(), password: passController.text.toString());
-                 var data= UserModel(email: emailController.text.toString(),
-                      pass: passController.text.toString(),
-                      uid: cred.user!.uid,
-                      mob: mobController.text.toString(),
-                      gender: genderController.text.toString(),
-                      name: nameController.text.toString());
-                 mUsers.doc(cred.user!.uid).set(data.toDoc());
-                 print('Sign ${cred.user!.uid}');
-
-                  Navigator.pop(context);
-                }on FirebaseAuthException catch(e){
-                  if (e.code == 'weak-password') {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.code)));
-                    print('The password provided is too weak.');
-                  } else if (e.code == 'email-already-in-use') {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.code)));
-                    print('The account already exists for that email.');
+                if(emailController.text.isNotEmpty&&passController.text.isNotEmpty&&mobController.text.isNotEmpty&&
+                genderController.text.isNotEmpty&&nameController.text.isNotEmpty){
+                  try{
+                    var cred =await fireBaseAuth.createUserWithEmailAndPassword(email: emailController.text.toString(), password: passController.text.toString());
+                    var data= UserModel(email: emailController.text.toString(),
+                        pass: passController.text.toString(),
+                        uid: cred.user!.uid,
+                        mob: mobController.text.toString(),
+                        gender: genderController.text.toString(),
+                        name: nameController.text.toString());
+                    mUsers.doc(cred.user!.uid).set(data.toDoc());
+                    Navigator.pop(context);
+                  }on FirebaseAuthException catch(e){
+                    if (e.code == 'weak-password') {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Week Password')));
+                      print('The password provided is too weak.');
+                    } else if (e.code == 'email-already-in-use') {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Account already exists for that email')));
+                      print('The account already exists for that email.');
+                    }
+                  }catch(e){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
                   }
-                }catch(e){
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
-                }
+                }else{
 
+                }
               }, child: Text('Sign Up',style: TextStyle(fontSize: 25,color: Colors.white),),style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueGrey,),),
             ),

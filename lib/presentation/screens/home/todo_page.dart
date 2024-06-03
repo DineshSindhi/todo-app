@@ -41,7 +41,7 @@ class _TodoPageState extends State<TodoPage> {
       appBar: myAppBar('Todos'),
       body: uId != null ? StreamBuilder(
         stream: fireStore.collection('users').doc(uId)
-            .collection('todos')
+            .collection('todos').orderBy('createdAt',descending: true)
             .snapshots(),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -65,7 +65,7 @@ class _TodoPageState extends State<TodoPage> {
                     border: Border.all(color: Colors.grey)
                   ),
                   child: ListTile(
-                     tileColor: eachData.isCompleted==true?Colors.green:pt=='1'?Colors.red.shade600:pt=='2'?Colors.blue.shade600:pt=='3'?Colors.yellow:Colors.white,
+                     tileColor: eachData.isCompleted==true?Colors.green:pt=='1'?Colors.red.shade600:pt=='2'?Colors.blue.shade600:pt=='3'?Colors.orange:Colors.white,
                     onLongPress: () {
                       showModalBottomSheet(context: context, builder: (context) {
                         return Container(
@@ -198,20 +198,16 @@ class _TodoPageState extends State<TodoPage> {
                       children: [
                         ElevatedButton(onPressed: () async {
                           pn='1';
-                          print(pn);
 
                         }, child: Text('High', style: TextStyle(fontSize: 25),)),
                         SizedBox(width: 5,),
                         ElevatedButton(onPressed: () async {
                           pn='2';
-                          print(pn);
 
                         }, child: Text('Medium', style: TextStyle(fontSize: 25),)),
                         SizedBox(width: 5,),
                         ElevatedButton(onPressed: () async {
                           pn='3';
-                          print(pn);
-
                         }, child: Text('Low', style: TextStyle(fontSize: 25),)),
                         SizedBox(width: 5,)
                       ],),
@@ -223,42 +219,47 @@ class _TodoPageState extends State<TodoPage> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(onPressed: () async {
-                    if (isUpdate) {
-                      ///update details
-                      var upData = TodoModel(
-                        title: titController.text.toString(),
-                        taskDesc: taskDescController.text.toString(),
-                        createdAt: DateTime
-                            .now()
-                            .millisecondsSinceEpoch
-                            .toString(),
-                        priority: pn
+                    if(titController.text.isNotEmpty&&taskDescController.text.isNotEmpty){
+                      if (isUpdate) {
+                        ///update details
+                        var upData = TodoModel(
+                            title: titController.text.toString(),
+                            taskDesc: taskDescController.text.toString(),
+                            createdAt: DateTime
+                                .now()
+                                .millisecondsSinceEpoch
+                                .toString(),
+                            priority: pn
                         );
-                      mTodos.doc(upIndex).update(upData.toDoc());
-                      Navigator.pop(context);
-                      titController.clear();
-                      taskDescController.clear();
+                        mTodos.doc(upIndex).update(upData.toDoc());
+                        Navigator.pop(context);
+                        titController.clear();
+                        taskDescController.clear();
 
-                    } ///Add details
-                    else {
-                      var data = TodoModel(title: titController.text.toString(),
-                        taskDesc: taskDescController.text.toString(),
-                        createdAt: DateTime
-                            .now()
-                            .millisecondsSinceEpoch
-                            .toString(),
-                        completedAt: DateTime
-                            .now()
-                            .millisecondsSinceEpoch
-                            .toString(),
-                        userId: uId,
-                        priority: pn
-                               );
-                      mTodos.add(data.toDoc());
-                      Navigator.pop(context);
-                      titController.clear();
-                      taskDescController.clear();
+                      } ///Add details
+                      else {
+                        var data = TodoModel(title: titController.text.toString(),
+                            taskDesc: taskDescController.text.toString(),
+                            createdAt: DateTime
+                                .now()
+                                .millisecondsSinceEpoch
+                                .toString(),
+                            completedAt: DateTime
+                                .now()
+                                .millisecondsSinceEpoch
+                                .toString(),
+                            userId: uId,
+                            priority: pn
+                        );
+                        mTodos.add(data.toDoc());
+                        Navigator.pop(context);
+                        titController.clear();
+                        taskDescController.clear();
+                      }
+                    }else{
+
                     }
+
                   },
                       child: Text(isUpdate ? 'Update Todo' : 'Add Todo',
                         style: TextStyle(fontSize: 25),)),
