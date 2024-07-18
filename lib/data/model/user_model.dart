@@ -5,8 +5,10 @@ class UserModel{
  String? mob;
  String? gender;
  String? name;
+ String? image;
 
- UserModel({required this.email, required this.pass, required this.mob,required  this.gender, required this.name,required this.uid});
+
+ UserModel({required this.email, required this.pass, required this.mob,required  this.gender, required this.name,required this.uid, this.image=''});
   factory UserModel.fromDoc(Map<String,dynamic>doc){
     return UserModel(
         email: doc['email'],
@@ -15,6 +17,7 @@ class UserModel{
         gender: doc['gender'],
         name: doc['name'],
       uid: doc['uid'],
+      image: doc['image']
     );
   }
 
@@ -26,6 +29,7 @@ class UserModel{
       'gender':gender,
       'name':name,
       'uid':uid,
+      'image':image
     };
   }
 }

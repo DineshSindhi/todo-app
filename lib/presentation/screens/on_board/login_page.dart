@@ -25,11 +25,11 @@ class LoginPage extends StatelessWidget {
             mySizeBox(),
             myTextFiled(controllerName: emailController, label: 'Email',hint: 'Enter your Email'),
             mySizeBox(),
-            myPassController(controllerName: passController, label: 'Password',hint: 'Enter your Password'),
-            //myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
+            //myPassController(controllerName: passController, label: 'Password',hint: 'Enter your Password'),
+            myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
             mySizeBox(),
             Container(
-              width: double.infinity,
+              width: 500,
               height: 50,
               child: ElevatedButton(onPressed: () async {
                 if(emailController.text.isNotEmpty&&passController.text.isNotEmpty){

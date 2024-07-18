@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/presentation/screens/home/photo.dart';
 import 'package:todo_app/presentation/screens/home/profile_page.dart';
 import 'package:todo_app/presentation/screens/home/todo_page.dart';
-
 class HomePage extends StatefulWidget {
 
   @override
@@ -12,7 +13,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Widget>PageList=[
     TodoPage(),
-    ProfilePage()
+    ProfilePage(),
+    PhotoPage()
   ];
   int selected=0;
 
@@ -39,6 +41,7 @@ class _HomePageState extends State<HomePage> {
         destinations: [
           NavigationDestination(icon: Icon(Icons.home), label: 'Home',),
           NavigationDestination(icon: Icon(Icons.account_circle), label: 'Profile',),
+          NavigationDestination(icon: Icon(Icons.photo), label: 'Photo',),
 
   ]),
       body: PageList[selected],

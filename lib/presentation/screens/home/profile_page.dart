@@ -28,17 +28,18 @@ class ProfilePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 var mData=snapshot.data!.docs[index].data();
                 var eachData=UserModel.fromDoc(mData);
-                return Column(mainAxisAlignment: MainAxisAlignment.center,
+                return Column(
                   children: [
                   SizedBox(
                     height: 110,
                     width: 110,
                     child: ClipRRect(
-                        child: Image.asset('assets/images/avatar.png',fit: BoxFit.fill,)),
+                        child: Image.network(eachData.image!,fit: BoxFit.fill,)),
                   ),
                     myEmail(' ${eachData.email} '),
                     myContainer('Name - ${eachData.name}', (){
-                      showModalBottomSheet(context: context, builder: (c) {
+                      showModalBottomSheet(
+                        context: context, builder: (c) {
                         controller.text=eachData.name!;
                         return mySheet('Name', 'Name','Update Name',context,'name',);
                       },);
@@ -48,6 +49,7 @@ class ProfilePage extends StatelessWidget {
                         controller.text=eachData.mob!;
                         return mySheet('Mobile No.', 'Mobile No.', 'Update Mobile No.',context,'mob',);
                       },);
+
                     }, Icon(Icons.edit)),
                     myContainer('Gender - ${eachData.gender}', (){
                       showModalBottomSheet(context: context, builder: (c) {
@@ -105,7 +107,8 @@ class ProfilePage extends StatelessWidget {
   }
   Widget mySheet(String titleText, String lable,String buttonText, BuildContext context,String valueText,) {
     return Container(
-        height: 250,
+        height: 700,
+
         decoration: BoxDecoration(
             color: Colors.blueGrey.shade300,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))

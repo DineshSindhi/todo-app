@@ -15,8 +15,10 @@ class SignPage extends StatelessWidget {
   late CollectionReference mUsers;
   @override
   Widget build(BuildContext context) {
+   // var isKey= MediaQuery.of(context).viewInsets.bottom !=0;
     mUsers=fireStore.collection('users');
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: myAppBar('Sign Page'),
       body: Padding(
         padding: const EdgeInsets.only(left: 10,right: 10),
@@ -32,11 +34,11 @@ class SignPage extends StatelessWidget {
             mySizeBox(),
             myTextFiled(controllerName: emailController, label: 'Email',hint: 'Enter your Email',),
             mySizeBox(),
-            myPassController(controllerName: passController, label: 'Password',hint: 'Enter your Password'),
-            //myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
+            //myPassController(controllerName: passController, label: 'Password',hint: 'Enter your Password'),
+            myTextFiled(controllerName: passController, label: 'Password',hint: 'Enter your Password',suffixIcon: Icon(Icons.visibility_off),obscureText: true),
             mySizeBox(),
             Container(
-              width: double.infinity,
+              width: 500,
               height: 50,
               child: ElevatedButton(onPressed: () async {
                 if(emailController.text.isNotEmpty&&passController.text.isNotEmpty&&mobController.text.isNotEmpty&&

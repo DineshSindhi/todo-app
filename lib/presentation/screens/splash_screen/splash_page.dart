@@ -1,11 +1,7 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/presentation/screens/home/home_page.dart';
-import 'package:todo_app/presentation/screens/home/todo_page.dart';
-
 import '../on_board/login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -27,12 +23,12 @@ class _SplashPageState extends State<SplashPage> {
 
     if(user != null){
       print(user);
-      Timer(Duration(seconds: 2), () {
+      Timer(Duration(seconds: 4), () {
         Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage(),));
       });
     }
     else{
-      Timer(Duration(seconds: 2), () {
+      Timer(Duration(seconds: 4), () {
         Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginPage(),));
       });
     }

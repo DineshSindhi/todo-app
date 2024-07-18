@@ -7,6 +7,7 @@ class TodoModel {
   String? priority;
   bool? isCompleted;
 
+
   TodoModel(
       {required this.title,
       required this.taskDesc,
@@ -14,7 +15,8 @@ class TodoModel {
        this.userId,
         this.completedAt,
         this.isCompleted=false,
-       this.priority='1'
+       this.priority='1',
+
       });
 
   factory TodoModel.fromDoc(Map<String, dynamic> doc) {
